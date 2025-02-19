@@ -201,16 +201,28 @@ class Api {
 }
 
 Api.UNITS = {
-  // rawSpeed is Bps
-  Bps: rawSpeed => rawSpeed,
-  KBps: rawSpeed => rawSpeed / 1000,
-  MBps: rawSpeed => rawSpeed / 1000000,
-  GBps: rawSpeed => rawSpeed / 1000000000,
+  // rawSpeed is in B/s
+  "B/s": rawSpeed => rawSpeed,
+  "KB/s": rawSpeed => rawSpeed / 1000,
+  "MB/s": rawSpeed => rawSpeed / 1000 / 1000,
+  "GB/s": rawSpeed => rawSpeed / 1000 / 1000 / 1000,
 
-  bps: rawSpeed => rawSpeed * 8,
-  Kbps: rawSpeed => (rawSpeed * 8) / 1000,
-  Mbps: rawSpeed => (rawSpeed * 8) / 1000000,
-  Gbps: rawSpeed => (rawSpeed * 8) / 1000000000,
+  "KiB/s": rawSpeed => rawSpeed / 1024,
+  "MiB/s": rawSpeed => rawSpeed / 1024 / 1024,
+  "GiB/s": rawSpeed => rawSpeed / 1024 / 1024 / 1024,
+  
+  "b/s": rawSpeed => rawSpeed * 8,
+  "Kb/s": rawSpeed => (rawSpeed * 8) / 1000,
+  "Mb/s": rawSpeed => (rawSpeed * 8) / 1000 / 1000,
+  "Gb/s": rawSpeed => (rawSpeed * 8) / 1000 / 1000 / 1000,
+
+  "Kib/s": rawSpeed => (rawSpeed * 8) / 1024,
+  "Mib/s": rawSpeed => (rawSpeed * 8) / 1024 / 1024,
+  "Gib/s": rawSpeed => (rawSpeed * 8) / 1024 / 1024 / 1024,
 };
+
+Object.entries(Api.UNITS).forEach(([i, v]) => {
+  Api.UNITS[i.replace("/", "p")] = v; // for example, "MB/s" to "MBps"
+})
 
 module.exports = Api;
